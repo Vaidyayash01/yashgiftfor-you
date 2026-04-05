@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Neha 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    overflow-x: hidden;
+}
+
+/* INTRO */
+#intro {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1a1a2e, #000);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.glow-btn {
+    margin-top: 25px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #ff758c, #ff7eb3);
+    color: white;
+}
+
+/* MAIN */
+#main {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+/* LETTER */
+.letter {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(15px);
+    transform: scale(0.9);
+    opacity: 0;
+    transition: 0.8s;
+}
+
+.letter.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* TEXT */
+#message {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* COLLAGE */
+.photo-collage {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin: 25px auto;
+}
+
+.photo {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 3px solid white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.p1 { top: 0; left: 20px; transform: rotate(-8deg); }
+.p2 { top: 40px; left: 100px; transform: rotate(6deg); }
+.p3 { top: 120px; left: 10px; transform: rotate(5deg); }
+.p4 { top: 140px; left: 120px; transform: rotate(-6deg); }
+
+/* HEARTS */
+.heart {
+    position: fixed;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* CONFETTI */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <h2>✨ Something special for you ✨</h2>
+    <button class="glow-btn" onclick="enter()">Tap to Begin 💖</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<canvas id="confetti"></canvas>
+
+<h2>Happy Birthday Neha 💖</h2>
+
+<button class="glow-btn" onclick="openLetter()">Open Your Letter 💌</button>
+
+<div class="letter" id="letter">
+    <div id="message"></div>
+
+    <!-- PHOTO COLLAGE -->
+    <div class="photo-collage">
+        <img src="img1.jpg" class="photo p1">
+        <img src="img2.jpg" class="photo p2">
+        <img src="img3.jpg" class="photo p3">
+        <img src="img4.jpg" class="photo p4">
+    </div>
+</div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ENTER
+function enter() {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    startHearts();
+}
+
+// OPEN LETTER
+function openLetter() {
+    document.getElementById("letter").classList.add("show");
+    document.getElementById("music").play();
+    typeWriter();
+    startConfetti();
+}
+
+// TEXT
+const text = `Neha 💖
+
+You are not just my sister,
+you are my strongest support.
+
+Thank you for always being there.
+
+I’m really lucky to have you.
+
+Happy Birthday 🎂✨`;
+
+let i = 0;
+
+function typeWriter() {
+    if (i < text.length) {
+        message.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 35);
+    }
+}
+
+// CONFETTI
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let p = [];
+for (let i = 0; i < 40; i++) {
+    p.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height});
+}
+
+function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "white";
+    p.forEach(pt => {
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 2, 0, Math.PI*2);
+        ctx.fill();
+        pt.y += 0.5;
+        if(pt.y > canvas.height) pt.y = 0;
+    });
+}
+
+function startConfetti() {
+    setInterval(draw, 30);
+}
+
+// HEARTS
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.fontSize = (12 + Math.random()*20) + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }, 500);
+}
+</script>
+
+</body>
+</html>
